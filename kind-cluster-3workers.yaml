@@ -1,0 +1,19 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+  extraMounts:
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"
+  extraPortMappings:
+  - containerPort: 30080
+    hostPort: 30080
+- role: worker
+  extraMounts:
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"
+- role: worker
+  extraMounts:
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"

@@ -1,0 +1,12 @@
+# Exclude the heavy model directory
+models/
+
+# Exclude explicit model files (safety net)
+*.joblib
+
+# Python cache and envs
+__pycache__/
+*.pyc
+.git
+.env
+venv/

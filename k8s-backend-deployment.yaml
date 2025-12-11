@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: language-backend:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            # MEMORY: Realistic value to cover the 1.2GB Model
+            memory: "1800Mi"
+            # CPU: Artificially low request to sensitize the HPA math
+            cpu: "100m"
+          limits:
+            memory: "2000Mi"
+            cpu: "300m" 
+          # ROBUSTNESS: TCP Probe avoids HTTP 404 errors during startup
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 30 
+          periodSeconds: 5
+        volumeMounts:
+        - name: model-volume
+          mountPath: "/app/models"
+          readOnly: true
+      volumes:
+      - name: model-volume
+        hostPath:
+          path: "/data/models"

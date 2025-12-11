@@ -1,0 +1,20 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+  extraMounts:
+  # INJECTION: Mounting the local model directory into the worker node
+  # This allows the Backend pods to access the 1.1GB model without downloading it.
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"
+  extraPortMappings:
+  # EXPOSURE: Mapping port 30080 to allow browser access via NodePort
+  - containerPort: 30080
+    hostPort: 30080
+- role: worker
+  extraMounts:
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"
+
+    

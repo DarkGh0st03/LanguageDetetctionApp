@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: benchmarker
+spec:
+  containers:
+  - name: wrk
+    image: williamyeh/wrk
+    # FIX: Alpine non supporta 'infinity', usiamo un numero alto
+    command: ["sleep", "100000"]
+    imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: "2"
+        memory: "1Gi"
