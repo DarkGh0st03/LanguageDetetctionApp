@@ -1,5 +1,5 @@
 # FIX 1: Base Image Upgrade
-# Switching to Python 3.12 resolves multiple system-level CVEs found in 3.10 (e.g., glibc, openssl)
+# Switching to Python 3.12 resolves multiple system-level CVEs found in 3.10
 FROM python:3.12-slim
 # MITIGATION 3: Defense-in-Depth (User Creation)
 # Creating a non-privileged system user (UID 1000) to prepare for privilege drop
@@ -15,7 +15,7 @@ COPY . .
 RUN chown -R appuser:appuser /app
 # MITIGATION 3: Runtime Security Enforcement
 # Switching execution context to non-root.
-# This neutralizes the impact of the unpatched 'tar' vulnerability (CVE-2025-45582)
+# This neutralizes the impact of the unpatched 'tar' vulnerability
 # by preventing arbitrary file overwrites on system paths.
 USER 1000
 EXPOSE 8000

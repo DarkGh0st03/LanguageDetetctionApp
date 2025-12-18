@@ -4,7 +4,7 @@ nodes:
 - role: control-plane
 - role: worker
   extraMounts:
-  # INJECTION: Mounting the local model directory into the worker node
+  # INJECTION: Mounting the local model directory into the worker node.
   # This allows the Backend pods to access the 1.1GB model without downloading it.
   - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
     containerPath: "/data/models"
@@ -14,6 +14,7 @@ nodes:
     hostPort: 30080
 - role: worker
   extraMounts:
+  # Consistency: Ensure all workers have access to the model volume
   - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
     containerPath: "/data/models"
 

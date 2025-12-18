@@ -17,10 +17,11 @@ spec:
         image: language-frontend:v2
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8501
+        - containerPort: 80  # Aggiornato per FastAPI
         env:
         - name: BACKEND_URL
           value: "http://backend-service:80"
+        # CONFIGURAZIONE RISORSE TEST
         resources:
           requests:
             memory: "200Mi"
@@ -29,12 +30,8 @@ spec:
             memory: "500Mi"
             cpu: "300m"
         readinessProbe:
-          httpGet:
-            path: /_stcore/health
-            port: 8501
-          initialDelaySeconds: 10
-          periodSeconds: 5
-
-
-
-          
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5

@@ -18,16 +18,14 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
+        # CONFIGURAZIONE RISORSE TEST (Stress Test Profile)
         resources:
           requests:
-            # MEMORY: Realistic value to cover the 1.2GB Model
-            memory: "1800Mi"
-            # CPU: Artificially low request to sensitize the HPA math
-            cpu: "100m"
+            memory: "1.5Gi"  # Richiesta alta per garantire l'allocazione
+            cpu: "500m"
           limits:
-            memory: "2000Mi"
-            cpu: "300m" 
-          # ROBUSTNESS: TCP Probe avoids HTTP 404 errors during startup
+            memory: "3.0Gi"  # Margine per picchi
+            cpu: "1000m"      
         readinessProbe:
           tcpSocket:
             port: 8000

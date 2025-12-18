@@ -1,4 +1,3 @@
-# k8s-hpa-backend.yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -17,14 +16,22 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 35
-  # STABILITY NET: Scales up if RAM usage spikes, preventing crashes
+        averageUtilization: 70
+  # STABILITY NET: Scales up if RAM usage spikes (90%), preventing crashes
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
         averageUtilization: 90
+  # STABILIZATION: Prevents "Ghost Scaling" during startup
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30 # Aligned with Readiness Probe delay
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300 # Standard 5-min cooldown
 
-
-        

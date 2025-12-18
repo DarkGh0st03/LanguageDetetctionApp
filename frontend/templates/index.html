@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voyager Assist - Rilevatore Lingua</title>
+    <style>
+        /* Reset e Stili Base Mobile-First */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6; 
+            margin: 0; 
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* Card Contenitore */
+        .container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 { color: #333; text-align: center; margin-bottom: 5px; font-size: 24px; }
+        p.subtitle { text-align: center; color: #777; margin-top: 0; margin-bottom: 25px; font-size: 14px; }
+        
+        /* Area di Testo */
+        textarea { 
+            width: 100%; height: 150px; padding: 15px; 
+            border: 2px solid #e0e0e0; border-radius: 8px; 
+            font-size: 16px; resize: vertical; font-family: inherit;
+            transition: border 0.3s;
+        }
+        textarea:focus { outline: none; border-color: #4CAF50; }
+        
+        /* Bottone */
+        button { 
+            background-color: #4CAF50; color: white; padding: 15px; 
+            border: none; border-radius: 8px; font-size: 18px; font-weight: bold; 
+            cursor: pointer; width: 100%; margin-top: 15px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        button:hover { background-color: #45a049; }
+        button:active { transform: scale(0.98); }
+        
+        /* Box Risultati */
+        .result-box { margin-top: 25px; padding: 20px; border-radius: 8px; text-align: center; animation: fadeIn 0.3s ease-in; }
+        .success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .error { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        
+        .result-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .result-value { font-size: 28px; font-weight: bold; margin-top: 5px; display: block; }
+        
+        /* Stile per la Nota del Dialetto */
+        .dialect-note {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 14px;
+            font-style: italic;
+            color: #1b5e20;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Voyager Assist</h1>
+        <p class="subtitle">AI Language Detection System</p>
+        
+        <form action="/detect" method="post">
+            <textarea name="text" placeholder="Incolla qui il testo da analizzare..." required>{{ input_text }}</textarea>
+            <button type="submit">Rileva Lingua</button>
+        </form>
+
+        {% if result %}
+        <div class="result-box success">
+            <span class="result-label">Lingua Rilevata</span>
+            <span class="result-value">{{ result }}</span>
+            
+            {% if note %}
+            <div class="dialect-note">
+                ℹ️ {{ note }}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="result-box error">
+            <strong>Errore:</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

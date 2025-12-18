@@ -1,31 +1,26 @@
-# k8s-services.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
 spec:
-  # SECURITY: ClusterIP makes the API accessible ONLY within the cluster
   type: ClusterIP
   selector:
     app: backend
   ports:
     - protocol: TCP
-      port: 80         # Internal Service Port
-      targetPort: 8000 # Container Port (FastAPI)
+      port: 80
+      targetPort: 8000
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
 spec:
-  # ACCESS: NodePort exposes the UI to the host machine for testing
   type: NodePort
   selector:
     app: frontend
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8501 # Container Port (Streamlit)
-      nodePort: 30080  # Static port for localhost access
-
-      
+      targetPort: 80    # Aggiornato: il container ascolta sulla 80
+      nodePort: 30080

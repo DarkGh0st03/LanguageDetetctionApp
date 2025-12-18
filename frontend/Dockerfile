@@ -8,9 +8,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 COPY . .
+# Transfer ownership for the new user
 RUN chown -R appuser:appuser /app
 # MITIGATION 3: Enforce non-root execution
 USER 1000
-EXPOSE 8501
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Expose standard HTTP port
+EXPOSE 80
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
 
