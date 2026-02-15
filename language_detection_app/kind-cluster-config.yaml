@@ -1,0 +1,23 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  # Note: No extraPortMappings are used here to avoid
+  # conflicts with Windows services (IIS/Hyper-V).
+  # Access will be established via Secure Tunnel.
+- role: worker
+  extraMounts:
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"
+- role: worker
+  extraMounts:
+  - hostPath: "C:/Users/giuli/Desktop/language_detection_app/models"
+    containerPath: "/data/models"
+
+    

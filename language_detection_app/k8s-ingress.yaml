@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: voyager-ingress
+  annotations:
+    # 1. SECURITY: Rate Limiting (DDoS Defense)
+    # Limit each client IP to 10 requests per second
+    nginx.ingress.kubernetes.io/limit-rps: "1"
+    # Allow a burst buffer of 5 requests for natural spikes
+    nginx.ingress.kubernetes.io/limit-burst: "5"
+    # Return specific error code when blocked
+    nginx.ingress.kubernetes.io/limit-req-status-code: "503"
+
+    # 2. SECURITY: WAF-Lite (Payload Restriction)
+    # Reject request bodies larger than 1MB to prevent OOM attacks
+    nginx.ingress.kubernetes.io/proxy-body-size: "1m"
+spec:
+  # 3. Traffic Routing Controller (Modern Syntax)
+  ingressClassName: nginx
+  tls:
+  # 4. SECURITY: TLS Termination (Data Privacy)
+  # Uses the secret 'language-tls' containing the certificate
+  - hosts:
+    - localhost
+    secretName: language-tls
+  rules:
+  # 5. Wildcard Routing (Accepts traffic from any Host header)
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+
